@@ -6,14 +6,6 @@
 
 #define BUFFER_SIZE 1024
 
-void remove_newline(char *str) 
-{   char *newline;
-    newline = strchr(str, '\n');
-    if (newline != NULL) {
-        *newline = '\0';
-    }
-}
-
 int main(void) 
 {
     ssize_t char_read;
@@ -22,9 +14,7 @@ int main(void)
     char *token;
     pid_t pid;
     int num_tokens;
-    char *tokens[BUFFER_SIZE];
     
-
     while (1) {
         printf("ajr> ");
 
@@ -34,10 +24,14 @@ int main(void)
            return (-1);
         }
 
-        remove_newline(line);
+        line[strcspn(line, "\n")] = '\0';
 
-      
-       
+        char **tokens = malloc(sizeof(char*) * BUFFER_SIZE);
+        if (tokens == NULL) {
+            perror("Error");
+            return (-1);
+        }
+
         num_tokens = 0;
         token = strtok(line, " \n");
         while (token != NULL) {
@@ -48,28 +42,33 @@ int main(void)
         tokens[num_tokens] = NULL;
 
         if (num_tokens == 0) {
+            free(tokens);
             continue;
         }
 
         pid = fork();
 
         if (pid == -1) {
+            free(tokens);
             return (-1);
         } else if (pid == 0) {
            
             if (execvp(tokens[0], tokens) == -1) {
                 perror("Error");
+                free(tokens);
                 return (-1);
             }
         } else {
             int status;
             if (wait(&status) == -1) {
+                free(tokens);
                 return (-1);
             }
         }
+
+        free(tokens);
     }
 
     free(line);
-
     return 0;
 }
