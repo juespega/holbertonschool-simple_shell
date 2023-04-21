@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 #define BUFFER_SIZE 1024
-
+char **tokens = malloc(sizeof(char*) * BUFFER_SIZE)
 int main(void) 
 {
     ssize_t char_read;
