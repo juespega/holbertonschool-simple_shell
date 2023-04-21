@@ -14,6 +14,8 @@ int main(void)
     char *token;
     pid_t pid;
     int num_tokens;
+    
+
     while (1) {
         printf("ajr> ");
 
