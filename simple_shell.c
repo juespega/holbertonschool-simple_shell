@@ -12,7 +12,7 @@ int main(void)
     char *line = NULL;
     size_t bytes_read = 0;
     char *token;
-    pid_t *pid;
+    pid_t pid;
     
     while (1) {
         printf("ana,juliyrubio> ");
