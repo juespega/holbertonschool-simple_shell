@@ -13,7 +13,7 @@ int main(void)
     size_t bytes_read = 0;
     char *token;
     pid_t pid;
-
+    char *tokens;
     while (1) {
         printf("ajr> ");
 
@@ -26,7 +26,7 @@ int main(void)
         line[strcspn(line, "\n")] = '\0';
 
       
-        char *tokens[BUFFER_SIZE];
+        tokens[BUFFER_SIZE];
         int num_tokens = 0;
         token = strtok(line, " \n");
         while (token != NULL) {
