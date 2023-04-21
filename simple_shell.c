@@ -15,7 +15,7 @@ int main(void)
     pid_t pid;
     
     while (1) {
-        printf("ana,juliyrubio> ");
+        printf("ajr> ");
 
         
         char_read = getline(&line, &bytes_read, stdin);
