@@ -14,6 +14,7 @@ int main(void)
     char *token;
     pid_t pid;
     int num_tokens;
+    char *tokens[BUFFER_SIZE];
     
 
     while (1) {
@@ -28,7 +29,7 @@ int main(void)
         line[strcspn(line, "\n")] = '\0';
 
       
-        char *tokens[BUFFER_SIZE];
+       
         num_tokens = 0;
         token = strtok(line, " \n");
         while (token != NULL) {
