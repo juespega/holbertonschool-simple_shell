@@ -6,6 +6,14 @@
 
 #define BUFFER_SIZE 1024
 
+void remove_newline(char *str) 
+{   char *newline;
+    newline = strchr(str, '\n');
+    if (newline != NULL) {
+        *newline = '\0';
+    }
+}
+
 int main(void) 
 {
     ssize_t char_read;
@@ -26,7 +34,7 @@ int main(void)
            return (-1);
         }
 
-        line[strcspn(line, "\n")] = '\0';
+        remove_newline(line);
 
       
        
