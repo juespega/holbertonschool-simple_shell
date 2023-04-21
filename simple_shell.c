@@ -30,6 +30,7 @@ int main(void)
         char_read = getline(&line, &bytes_read, stdin);
 
         if (char_read == -1) {
+            free(line);
            return (-1);
         }
 
@@ -53,6 +54,7 @@ int main(void)
         pid = fork();
 
         if (pid == -1) {
+            free(line);
             return (-1);
         } else if (pid == 0) {
            
