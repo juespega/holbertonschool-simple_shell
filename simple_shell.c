@@ -25,7 +25,7 @@ int main(void)
         }
 
         
-        //line[strcspn(line, "\n")] = '\0';
+        line[strcspn(line, "\n")] = '\0';
 
         
         token = strtok(line, " ");
