@@ -57,7 +57,7 @@ void prompt(char **av, char **env)
             }
             if (execve(argv[0], argv, env) == -1)
             {
-                /*Verificar si el comando existe en las rutas especificadas en PATH*/
+                /Verificar si el comando existe en las rutas especificadas en PATH/
                 char *path_value = NULL;
                 char *path_name = "PATH=";
                 char **envp = environ;
@@ -80,7 +80,7 @@ void prompt(char **av, char **env)
                     sprintf(cmd_path, "%s/%s", dir, argv[0]);
                     if (access(cmd_path, X_OK) == 0)
                     {
-                        /*Ejecutar el comando si existe en PATH*/
+                        /Ejecutar el comando si existe en PATH/
                         execve(cmd_path, argv, env);
                     }
                     free(cmd_path);
@@ -94,6 +94,6 @@ void prompt(char **av, char **env)
         else
         {
             wait(&status);
-        }
-    }
+        }
+    }
 }
