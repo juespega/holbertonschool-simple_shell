@@ -22,6 +22,7 @@ void prompt(char **av, char **env)
     extern char **environ;
     char *path_copy;
     char *dir;
+
     while (1)
     {
         if (isatty(STDIN_FILENO))
@@ -57,7 +58,7 @@ void prompt(char **av, char **env)
             }
             if (execve(argv[0], argv, env) == -1)
             {
-                /*Verificar si el comando existe en las rutas especificadas en PATH*/
+                /* Verificar si el comando existe en las rutas especificadas en PATH */
                 char *path_value = NULL;
                 char *path_name = "PATH=";
                 char **envp = environ;
@@ -80,13 +81,14 @@ void prompt(char **av, char **env)
                     sprintf(cmd_path, "%s/%s", dir, argv[0]);
                     if (access(cmd_path, X_OK) == 0)
                     {
-                        /*Ejecutar el comando si existe en PATH*/
+                        /* Ejecutar el comando si existe en PATH */
                         execve(cmd_path, argv, env);
                     }
                     free(cmd_path);
                     dir = strtok(NULL, ":");
                 }
-                printf("%s: No funciona con este comando \n ", av[0]);
+                /* Si el comando no existe en PATH, mostrar un mensaje de error */
+                printf("%s: No funciona con este comando.\n", argv[0]);
                 free(path_copy);
                 exit(EXIT_FAILURE);
             }
@@ -94,6 +96,6 @@ void prompt(char **av, char **env)
         else
         {
             wait(&status);
-        }
-    }
+        }
+    }
 }
