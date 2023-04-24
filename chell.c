@@ -45,6 +45,7 @@ int main()
 {
     char input[MAX_INPUT_SIZE];
     while (1) {
+        int i;
         printf(":) ");
         fgets(input, MAX_INPUT_SIZE, stdin);
         tokenize(input);
@@ -66,7 +67,7 @@ int main()
                 wait(NULL);
             }
         }
-        for (int i = 0; tokens[i] != NULL; i++)
+        for (i = 0; tokens[i] != NULL; i++)
         {
             free(tokens[i]);
             tokens[i] = NULL;
