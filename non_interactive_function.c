@@ -10,15 +10,17 @@ void non_interactive(void)
 {
     char *line = NULL;
     size_t n = 0;
+    char **current_command;
+    int i;
 
     while (getline(&line, &n, stdin) != -1)
     {
         remove_newline(line);
         remove_comment(line);
         char **commands = tokenizer(line, ";");
-        for (int i = 0; commands[i] != NULL; i++)
+        for (i = 0; commands[i] != NULL; i++)
         {
-            char **current_command = tokenizer(commands[i], " ");
+            *current_command = tokenizer(commands[i], " ");
             if (current_command[0] != NULL)
             {
                 int type_command = parse_command(current_command[0]);
