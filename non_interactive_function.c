@@ -10,7 +10,7 @@ void non_interactive(void)
 {
     char *line = NULL;
     size_t n = 0;
-    char **current_command = NULL; // inicializar a NULL
+    char **current_command = NULL; 
     char **commands;
     int i;
     int type_command;
@@ -28,12 +28,12 @@ void non_interactive(void)
                 type_command = parse_command(current_command[0]);
                 initializer(current_command, type_command);
             }
-            if (current_command != NULL) // asegurarse de que no se libere NULL
+            if (current_command != NULL) 
                 free(current_command);
         }
         free(commands);
     }
-    if (line != NULL) // asegurarse de que no se libere NULL
+    if (line != NULL) 
         free(line);
     exit(status);
 }
