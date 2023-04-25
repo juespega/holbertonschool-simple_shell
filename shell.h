@@ -8,7 +8,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-void prompt(char **av, char **env);
+void prompt(char **env);
 int main(int ac, char **av, char **env);
 
 #endif
