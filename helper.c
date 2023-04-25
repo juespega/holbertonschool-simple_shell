@@ -2,29 +2,24 @@
 
 /**
  * tokenizer - tokenizes input and stores it into an array
- *@input_string: input to be parsed
- *@delim: delimiter to be used, needs to be one character string
+ * @input_string: input to be parsed
+ * @delim: delimiter to be used, needs to be one character string
  *
- *Return: array of tokens
+ * Return: array of tokens
  */
-
 char **tokenizer(char *input_string, char *delim)
 {
 	int num_delim = 0;
-	char **av = NULL;
-	char *token = NULL;
-	char *save_ptr = NULL;
+	char **av = NULL, *token = NULL, *save_ptr = NULL;
 
 	token = _strtok_r(input_string, delim, &save_ptr);
 
-	while (token != NULL)
+	while (token)
 	{
 		av = _realloc(av, sizeof(*av) * num_delim, sizeof(*av) * (num_delim + 1));
-		av[num_delim] = token;
+		av[num_delim++] = token;
 		token = _strtok_r(NULL, delim, &save_ptr);
-		num_delim++;
 	}
-
 	av = _realloc(av, sizeof(*av) * num_delim, sizeof(*av) * (num_delim + 1));
 	av[num_delim] = NULL;
 
@@ -32,72 +27,51 @@ char **tokenizer(char *input_string, char *delim)
 }
 
 /**
- *print - prints a string to stdout
- *@string: string to be printed
- *@stream: stream to print out to
- *
- *Return: void, return nothing
+ * print - prints a string to stdout
+ * @string: string to be printed
+ * @stream: stream to print out to
  */
 void print(char *string, int stream)
 {
-	int i = 0;
-
-	for (; string[i] != '\0'; i++)
-		write(stream, &string[i], 1);
+	for (; *string; string++)
+		write(stream, string, 1);
 }
 
 /**
- *remove_newline - removes new line from a string
- *@str: string to be used
- *
- *
- *Return: void
+ * remove_newline - removes new line from a string
+ * @str: string to be used
  */
-
 void remove_newline(char *str)
 {
-	int i = 0;
-
-	while (str[i] != '\0')
+	for (; *str; str++)
 	{
-		if (str[i] == '\n')
+		if (*str == '\n')
 			break;
-		i++;
 	}
-	str[i] = '\0';
+	*str = '\0';
 }
 
 /**
- *_strcpy - copies a string to another buffer
- *@source: source to copy from
- *@dest: destination to copy to
- *
- * Return: void
+ * _strcpy - copies a string to another buffer
+ * @src: source to copy from
+ * @dest: destination to copy to
  */
-
-void _strcpy(char *source, char *dest)
+void _strcpy(char *src, char *dest)
 {
-	int i = 0;
-
-	for (; source[i] != '\0'; i++)
-		dest[i] = source[i];
-	dest[i] = '\0';
+	while ((*dest++ = *src++))
+		;
 }
 
 /**
- *_strlen - counts string length
- *@string: string to be counted
- *
+ * _strlen - counts string length
+ * @string: string to be counted
  * Return: length of the string
  */
-
 int _strlen(char *string)
 {
 	int len = 0;
-
-	if (string == NULL)
-		return (len);
-	for (; string[len] != '\0'; len++)
+	for (; string && string[len]; len++)
 		;
 	return (len);
 }
+
