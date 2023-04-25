@@ -8,7 +8,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-void prompt(char **env);
+void prompt(char **av __attribute__((unused)), char **env)
 int main(int ac, char **env);
 
 #endif
