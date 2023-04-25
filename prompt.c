@@ -9,7 +9,7 @@
  * Return: None
  */
 
-void prompt(char **av, char **env)
+void prompt(char **env)
 {
     char *string = NULL;
     size_t n = 0;
