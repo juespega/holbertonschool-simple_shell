@@ -1,6 +1,5 @@
 #include "shell.h"
 #define MAX_COMPAND 10
-
 /**
  * prompt - Display a shell prompt and execute commands
  * @av: Array of command line argument strings
@@ -9,7 +8,7 @@
  * Return: None
  */
 
-void prompt(char **av __attribute__((unused)), char **env)
+void prompt(char **av, char **env)
 {
     char *string = NULL;
     size_t n = 0;
@@ -21,7 +20,6 @@ void prompt(char **av __attribute__((unused)), char **env)
     extern char **environ;
     char *path_copy;
     char *dir;
-    
     while (1)
     {
         if (isatty(STDIN_FILENO))
@@ -38,11 +36,6 @@ void prompt(char **av __attribute__((unused)), char **env)
             if (string[i] == '\n')
                 string[i] = 0;
             i++;
-        }
-        if (strcmp(string, "exit") == 0)
-        {
-            free(string);
-            exit(EXIT_SUCCESS);
         }
         j = 0;
         argv[j] = strtok(string, " ");
@@ -101,4 +94,5 @@ void prompt(char **av __attribute__((unused)), char **env)
             wait(&status);
         }
     }
+}  
 
