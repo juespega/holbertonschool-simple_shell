@@ -83,17 +83,21 @@ void prompt(char **av, char **env)
                     exit(EXIT_FAILURE);
                 }
                 path_copy = strdup(path_value);
+                path_aux = path_copy;
                 dir = strtok(path_copy, ":");
                 while (dir)
                 {
-                    char *cmd_path = malloc(strlen(dir) + strlen(argv[0]) + 2);
+                    cmd_path = malloc(strlen(dir) + strlen(argv[0]) + 2);
                     sprintf(cmd_path, "%s/%s", dir, argv[0]);
                     if (access(cmd_path, X_OK) == 0)
                     {
                         /**Ejecutar el comando si existe en PATH**/
-                        execve(cmd_path, argv, env);
+                        argv[0] = cmd_path;
+                        free(path_aux);
+                        break
                     }
                     free(cmd_path);
+                    cmd_path = NULL;
                     dir = strtok(NULL, ":");
                 }
                 printf("%s: No funciona con este comando \n ", av[0]);
