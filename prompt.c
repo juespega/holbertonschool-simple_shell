@@ -18,11 +18,12 @@ void prompt(char **av, char **env)
     char *argv[MAX_COMPAND];
     pid_t chil_pid;
     extern char **environ;
-    char *path_copy;
-    char *dir;
+    char *path_copy = NULL;
+    char *dir NULL;
     char *path_value = NULL;
     char *path_name = "PATH=";
     char **envp = environ;
+   
     
     while (1)
     {
