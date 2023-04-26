@@ -20,6 +20,9 @@ void prompt(char **av, char **env)
     extern char **environ;
     char *path_copy;
     char *dir;
+    char *path_value = NULL;
+    char *path_name = "PATH=";
+    char **envp = environ;
     while (1)
     {
         if (isatty(STDIN_FILENO))
@@ -68,9 +71,7 @@ void prompt(char **av, char **env)
             if (execve(argv[0], argv, env) == -1)
             {
                 /**Verificar si el comando existe en las rutas especificadas en PATH**/
-                char *path_value = NULL;
-                char *path_name = "PATH=";
-                char **envp = environ;
+                
                 while (*envp != NULL) {
                     if (strncmp(*envp, path_name, strlen(path_name)) == 0) {
                         path_value = strchr(*envp, '=') + 1;
