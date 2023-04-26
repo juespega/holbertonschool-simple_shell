@@ -10,5 +10,6 @@
 
 void prompt(char **av, char **env);
 int main(int ac, char **av, char **env);
+int env_builtin(char **env);
 
 #endif
