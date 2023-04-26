@@ -58,6 +58,12 @@ void prompt(char **av, char **env)
             free(string);
             exit(EXIT_SUCCESS);
             }
+            if (strcmp(argv[0], "env") == 0)
+            {
+            env_builtin(env);
+            continue;
+            }
+
 
             if (execve(argv[0], argv, env) == -1)
             {
