@@ -10,19 +10,18 @@
 
 void prompt(char **av, char **env)
 {
-    char *string = NULL;
-    size_t n = 0;
-    int i, j;
-    int status;
-    ssize_t num_char;
-    char *argv[MAX_COMPAND];
-    pid_t chil_pid;
-    extern char **environ;
-    char *path_copy;
-    char *dir;
+    int i, j, status = 0;
+    char *string = NULL, *argv[MAX_COMPAND];
+    char *path_copy, *dir, *path_aux;
     char *path_value = NULL;
     char *path_name = "PATH=";
+    char *cmd_path = NULL;
+    extern char **environ;
     char **envp = environ;
+    size_t n = 0;
+    ssize_t num_char;
+    pid_t chil_pid;
+    
     while (1)
     {
         if (isatty(STDIN_FILENO))
@@ -31,7 +30,7 @@ void prompt(char **av, char **env)
         if (num_char == -1)
         {
             free(string);
-            exit(EXIT_SUCCESS);
+            exit(WEXITSTATUS(status));
         }
         i = 0;
         while (string[i])
@@ -51,7 +50,7 @@ void prompt(char **av, char **env)
             exit(EXIT_FAILURE);
         }
         if (chil_pid == 0)
-        {
+        {   /*este código se corta*/
             if ((argv[0] == NULL) || strlen(argv[0]) == 0)
             {
                 continue;
@@ -59,7 +58,7 @@ void prompt(char **av, char **env)
             if (strcmp(argv[0], "exit") == 0)
             {
             free(string);
-            exit(EXIT_SUCCESS);
+            exit(WEXITSTATUS(status));
             }
             if (strcmp(argv[0], "env") == 0)
             {
