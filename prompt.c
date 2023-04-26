@@ -20,12 +20,6 @@ void prompt(char **av, char **env)
     extern char **environ;
     char *path_copy;
     char *dir;
-    char *path_value = NULL;
-    char *path_name = "PATH=";
-    char **envp = environ;
-    path_copy = NULL;
-    dir = NULL;
-    
     while (1)
     {
         if (isatty(STDIN_FILENO))
@@ -59,27 +53,20 @@ void prompt(char **av, char **env)
             {
                 continue;
             }
-            if (strcmp(argv[0], "exit") == 0)
-            {
-            free(string);
-            exit(EXIT_SUCCESS);
-            }     
-
             if (execve(argv[0], argv, env) == -1)
             {
                 /**Verificar si el comando existe en las rutas especificadas en PATH**/
-                
-                while (*envp != NULL) 
-                {
-                    if (strncmp(*envp, path_name, strlen(path_name)) == 0) 
-                    {
+                char *path_value = NULL;
+                char *path_name = "PATH=";
+                char **envp = environ;
+                while (*envp != NULL) {
+                    if (strncmp(*envp, path_name, strlen(path_name)) == 0) {
                         path_value = strchr(*envp, '=') + 1;
                         break;
                     }
                     envp++;
                 }
-                if (path_value == NULL) 
-                {
+                if (path_value == NULL) {
                     printf("No se encontró la variable de entorno PATH.\n");
                     exit(EXIT_FAILURE);
                 }
@@ -97,15 +84,14 @@ void prompt(char **av, char **env)
                     free(cmd_path);
                     dir = strtok(NULL, ":");
                 }
-                printf("%s: No funciona con este comando \n ", av[0]);
+                fprintf(stderr, "%s: command not found\n", argv[0]);
                 free(path_copy);
-                exit(EXIT_FAILURE);
+                exit(2);
             }
         }
         else
         {
             wait(&status);
-        }
-    }
-}  
+            if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+            {
 
