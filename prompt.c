@@ -94,7 +94,7 @@ void prompt(char **av, char **env)
                         /**Ejecutar el comando si existe en PATH**/
                         argv[0] = cmd_path;
                         free(path_aux);
-                        break
+                        break;
                     }
                     free(cmd_path);
                     cmd_path = NULL;
