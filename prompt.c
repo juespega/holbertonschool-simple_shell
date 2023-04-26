@@ -53,6 +53,12 @@ void prompt(char **av, char **env)
             {
                 continue;
             }
+            if (strcmp(argv[0], "exit") == 0)
+            {
+            free(string);
+            exit(EXIT_SUCCESS);
+            }
+
             if (execve(argv[0], argv, env) == -1)
             {
                 /**Verificar si el comando existe en las rutas especificadas en PATH**/
