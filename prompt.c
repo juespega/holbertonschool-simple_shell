@@ -27,16 +27,16 @@ void prompt(char **av __attribute__((unused)), char **env)
             fflush(stdout);
         }
 
-        // Reset signal handler for SIGINT
+  
         signal(SIGINT, SIG_DFL);
 
-        // Reset string and argv arrays
+        
         memset(argv, 0, sizeof(argv));
         free(string);
         string = NULL;
         n = 0;
 
-        // Get input from user
+        
         ssize_t len = getline(&string, &n, stdin);
         if (len == -1)
         {
@@ -44,10 +44,10 @@ void prompt(char **av __attribute__((unused)), char **env)
             exit(exit_status);
         }
 
-        // Remove trailing newline character from input
+       
         string[strcspn(string, "\n")] = '\0';
 
-        // Parse input into separate command and arguments
+      
         path = getenv("PATH");
         j = 0;
         argv[j] = strtok(string, " ");
@@ -56,7 +56,7 @@ void prompt(char **av __attribute__((unused)), char **env)
             argv[++j] = strtok(NULL, " ");
         }
 
-        // Execute built-in commands
+       
         if (strcmp(argv[0], "clear") == 0)
         {
             system("clear");
@@ -78,7 +78,7 @@ void prompt(char **av __attribute__((unused)), char **env)
             continue;
         }
 
-        // Fork a child process to execute the command
+      
         pid = fork();
         if (pid == -1)
         {
@@ -87,14 +87,14 @@ void prompt(char **av __attribute__((unused)), char **env)
         }
         if (pid == 0)
         {
-            // Child process
+            
             if ((argv[0] == NULL) || strlen(argv[0]) == 0)
             {
                 free(string);
                 exit(EXIT_SUCCESS);
             }
 
-            // Search for command in PATH
+            
             if (access(argv[0], F_OK) != 0 && path != NULL)
             {
                 token = strtok(path, ":");
@@ -115,7 +115,7 @@ void prompt(char **av __attribute__((unused)), char **env)
                 }
             }
 
-            // Execute command
+           
             if (execve(argv[0], argv, env) == -1)
             {
                 fprintf(stderr, "./hsh: %d: %s: not found\n", getpid(), argv[0]);
@@ -136,10 +136,7 @@ void prompt(char **av __attribute__((unused)), char **env)
                     exit_status = WEXITSTATUS(status);
                 }
 
-            /*if (WIFEXITED(status))
-            {
-                exit_status = WEXITSTATUS(status);
-            }*/
+           
         }
         free(string);
         string = NULL;
