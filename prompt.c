@@ -10,18 +10,16 @@
 
 void prompt(char **av, char **env)
 {
-    int i, j, status = 0;
-    char *string = NULL, *argv[MAX_COMPAND];
-    char *path_copy, *dir, *path_aux;
-    char *path_value = NULL;
-    char *path_name = "PATH=";
-    char *cmd_path = NULL;
-    extern char **environ;
-    char **envp = environ;
+    char *string = NULL;
     size_t n = 0;
+    int i, j;
+    int status = 0;
     ssize_t num_char;
+    char *argv[MAX_COMPAND];
     pid_t chil_pid;
-    
+    extern char **environ;
+    char *path_copy;
+    char *dir;
     while (1)
     {
         if (isatty(STDIN_FILENO))
@@ -30,7 +28,7 @@ void prompt(char **av, char **env)
         if (num_char == -1)
         {
             free(string);
-            exit(WEXITSTATUS(status));
+            exit(EXIT_SUCCESS);
         }
         i = 0;
         while (string[i])
@@ -50,27 +48,17 @@ void prompt(char **av, char **env)
             exit(EXIT_FAILURE);
         }
         if (chil_pid == 0)
-        {   /*este código se corta*/
+        {
             if ((argv[0] == NULL) || strlen(argv[0]) == 0)
             {
                 continue;
             }
-            if (strcmp(argv[0], "exit") == 0)
-            {
-            free(string);
-            exit(WEXITSTATUS(status));
-            }
-            if (strcmp(argv[0], "env") == 0)
-            {
-            env_builtin(env);
-            continue;
-            }
-
-
             if (execve(argv[0], argv, env) == -1)
             {
                 /**Verificar si el comando existe en las rutas especificadas en PATH**/
-                
+                char *path_value = NULL;
+                char *path_name = "PATH=";
+                char **envp = environ;
                 while (*envp != NULL) {
                     if (strncmp(*envp, path_name, strlen(path_name)) == 0) {
                         path_value = strchr(*envp, '=') + 1;
@@ -83,21 +71,17 @@ void prompt(char **av, char **env)
                     exit(EXIT_FAILURE);
                 }
                 path_copy = strdup(path_value);
-                path_aux = path_copy;
                 dir = strtok(path_copy, ":");
                 while (dir)
                 {
-                    cmd_path = malloc(strlen(dir) + strlen(argv[0]) + 2);
+                    char *cmd_path = malloc(strlen(dir) + strlen(argv[0]) + 2);
                     sprintf(cmd_path, "%s/%s", dir, argv[0]);
                     if (access(cmd_path, X_OK) == 0)
                     {
                         /**Ejecutar el comando si existe en PATH**/
-                        argv[0] = cmd_path;
-                        free(path_aux);
-                        break;
+                        execve(cmd_path, argv, env);
                     }
                     free(cmd_path);
-                    cmd_path = NULL;
                     dir = strtok(NULL, ":");
                 }
                 printf("%s: No funciona con este comando \n ", av[0]);
@@ -110,4 +94,4 @@ void prompt(char **av, char **env)
             wait(&status);
         }
     }
-}  
+} 
