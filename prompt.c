@@ -53,6 +53,11 @@ void prompt(char **av, char **env)
             {
                 continue;
             }
+            if (strcmp(argv[0], "env") == 0)
+            {
+                env_builtin(env);
+                continue;
+            }
             if (execve(argv[0], argv, env) == -1)
             {
                 /**Verificar si el comando existe en las rutas especificadas en PATH**/
