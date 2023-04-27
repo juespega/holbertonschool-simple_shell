@@ -1,5 +1,5 @@
 #include "shell.h"
-#define MAX_COMMAND 10
+#define MAX_COMPAND 10
 
 
 /**
