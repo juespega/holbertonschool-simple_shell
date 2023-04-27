@@ -1,5 +1,6 @@
 #include "shell.h"
 #define MAX_COMMAND 10
+#define MAX_COMPAND 10
 
 /**
  * prompt - Display a shell prompt and execute commands
