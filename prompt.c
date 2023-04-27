@@ -90,6 +90,10 @@ void prompt(char **av __attribute__((unused)), char **env)
                     {
                         cmd_path = malloc(strlen(token) + strlen(argv[0]) + 2);
                         sprintf(cmd_path, "%s/%s", token, argv[0]);
+                        if(cmd_path == NULL)
+                        {
+                            return (-1);
+                        }
                         if (access(cmd_path, F_OK) == 0)
                         {
                             argv[0] = cmd_path;
