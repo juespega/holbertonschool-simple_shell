@@ -49,12 +49,6 @@ void prompt(char **av __attribute__((unused)), char **env)
             argv[++j] = strtok(NULL, " ");
         }
 
-        // if (strcmp(argv[0], "clear") == 0)
-        // {
-        //     system("clear");
-        //     continue;
-        // }
-
         if (strcmp(argv[0], "exit") == 0)
         {
             free(line);
