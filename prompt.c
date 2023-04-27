@@ -52,13 +52,14 @@ void prompt(char **av __attribute__((unused)), char **env)
       
         path = getenv("PATH");
         
-        int i = 0;
+        i = 0;
         while ((token = strsep(&string, " ")) != NULL && i < MAX_COMMAND - 1)
         {
         if (token[0] != '\0')
         {
         argv[i++] = token;
         }
+        }    
             
         if (strcmp(argv[0], "clear") == 0)
         {
