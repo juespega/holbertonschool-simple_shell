@@ -1,6 +1,5 @@
 #include "shell.h"
-#define MAX_COMPAND 10
-
+#define MAX_COMMAND 10
 
 /**
  * prompt - Display a shell prompt and execute commands
@@ -10,98 +9,126 @@
  * Return: None
  */
 
-void prompt(char **av, char **env)
+void prompt(char **av __attribute__((unused)), char **env)
 {
     char *string = NULL;
+    int i, j, status, exit_status = 0;
     size_t n = 0;
-    int i, j;
-    int status;
-    ssize_t num_char;
-    char *argv[MAX_COMPAND];
-    pid_t chil_pid;
-    extern char **environ;
-    char *path_copy;
-    char *dir;
-    char *path_value = NULL;
-    char *path_name = "PATH=";
-    char **envp = environ;
+    ssize_t len;
+    char *argv[MAX_COMMAND];
+    char *path, *cmd_path, *token;
+    char **ptr;
+    pid_t pid;
     while (1)
     {
         if (isatty(STDIN_FILENO))
-            printf("cisfun$ ");
-        num_char = getline(&string, &n, stdin);
-        if (num_char == -1)
+        {
+            printf("$ ");
+            fflush(stdout);
+        }
+        len = getline(&string, &n, stdin);
+        if (len == -1)
         {
             free(string);
-            exit(EXIT_SUCCESS);
+            exit(exit_status);
         }
         i = 0;
         while (string[i])
         {
             if (string[i] == '\n')
+            {
                 string[i] = 0;
+            }
             i++;
         }
+        path = getenv("PATH");
         j = 0;
         argv[j] = strtok(string, " ");
-        while (argv[j])
+        while (argv[j] != NULL)
+        {
             argv[++j] = strtok(NULL, " ");
-        chil_pid = fork();
-        if (chil_pid == -1)
+        }
+        if (strcmp(argv[0], "clear") == 0)
+        {
+            system("clear");
+            continue;
+        }
+        if (strcmp(argv[0], "exit") == 0)
         {
             free(string);
-            exit(EXIT_FAILURE);
+            exit(exit_status);
         }
-        if (chil_pid == 0)
+        if (strcmp(argv[0], "env") == 0)
+        {
+            ptr = env;
+            while (*ptr != NULL)
+            {
+                printf("%s\n", *ptr);
+                ptr++;
+            }
+            continue;
+        }
+        pid = fork();
+        if (pid == -1)
+        {
+            free(string);
+            exit(1);
+        }
+        if (pid == 0)
         {
             if ((argv[0] == NULL) || strlen(argv[0]) == 0)
             {
-                continue;
+                free(string);
+                exit(EXIT_SUCCESS);
             }
-            if (strcmp(argv[0], "env") == 0)
-            {
-            env_builtin(env);
-            continue;
-            }
-
             if (execve(argv[0], argv, env) == -1)
             {
-                /**Verificar si el comando existe en las rutas especificadas en PATH**/
-             
-                while (*envp != NULL) {
-                    if (strncmp(*envp, path_name, strlen(path_name)) == 0) {
-                        path_value = strchr(*envp, '=') + 1;
-                        break;
-                    }
-                    envp++;
-                }
-                if (path_value == NULL) {
-                    printf("No se encontró la variable de entorno PATH.\n");
-                    exit(EXIT_FAILURE);
-                }
-                path_copy = strdup(path_value);
-                dir = strtok(path_copy, ":");
-                while (dir)
+                if (path != NULL)
                 {
-                    char *cmd_path = malloc(strlen(dir) + strlen(argv[0]) + 2);
-                    sprintf(cmd_path, "%s/%s", dir, argv[0]);
-                    if (access(cmd_path, X_OK) == 0)
+                    token = strtok(path, ":");
+                    while (token != NULL)
                     {
-                        /**Ejecutar el comando si existe en PATH**/
-                        execve(cmd_path, argv, env);
+                        cmd_path = malloc(strlen(token) + strlen(argv[0]) + 2);
+                        sprintf(cmd_path, "%s/%s", token, argv[0]);
+                        if (access(cmd_path, F_OK) == 0)
+                        {
+                            argv[0] = cmd_path;
+                            execve(argv[0], argv, env);
+                        }
+                        else
+                        {
+                            free(cmd_path);
+                            token = strtok(NULL, ":");
+                        }
                     }
-                    free(cmd_path);
-                    dir = strtok(NULL, ":");
                 }
-                printf("%s: No funciona con este comando \n ", av[0]);
-                free(path_copy);
-                exit(EXIT_FAILURE);
+
+                /* Print an error message if the command is not found */
+                fprintf(stderr, "./hsh: 1: %s: not found\n", argv[0]);
+                free(string);
+                exit(127);
             }
         }
         else
         {
-            wait(&status);
-        }
-    }
-}  
+            waitpid(pid, &status, 0);
+            if (WIFSIGNALED(status) && WTERMSIG(status) == SIGSEGV)
+                {
+                    printf("Segmentation fault\n");
+                    exit_status = 139;
+                }
+            else if (WIFEXITED(status))
+                {
+                    exit_status = WEXITSTATUS(status);
+                }
 
+            /*if (WIFEXITED(status))
+            {
+                exit_status = WEXITSTATUS(status);
+            }*/
+        }
+        free(string);
+        string = NULL;
+        n = 0;
+    }
+}
