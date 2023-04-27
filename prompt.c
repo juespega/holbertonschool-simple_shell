@@ -49,11 +49,11 @@ void prompt(char **av __attribute__((unused)), char **env)
             argv[++j] = strtok(NULL, " ");
         }
 
-        if (strcmp(argv[0], "clear") == 0)
-        {
-            system("clear");
-            continue;
-        }
+        // if (strcmp(argv[0], "clear") == 0)
+        // {
+        //     system("clear");
+        //     continue;
+        // }
 
         if (strcmp(argv[0], "exit") == 0)
         {
@@ -82,7 +82,8 @@ void prompt(char **av __attribute__((unused)), char **env)
         {
             if ((argv[0] == NULL) || strlen(argv[0]) == 0)
             {
-                continue;
+              free(line);
+                exit(cmd_exit_status);
             }
 
             if (execve(argv[0], argv, env) == -1)
@@ -106,12 +107,8 @@ void prompt(char **av __attribute__((unused)), char **env)
                         }
                     }
                 }
-                else
-                {
-                    fprintf(stderr, "./hsh: 1: %s: not found\n", argv[0]);
-                    free(line);
-                    exit(127);
-                }
+                
+                
                 /* Print an error message if the command is not found */
                 fprintf(stderr, "./hsh: 1: %s: not found\n", argv[0]);
                 free(line);
