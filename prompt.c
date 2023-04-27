@@ -92,7 +92,7 @@ void prompt(char **av __attribute__((unused)), char **env)
                         sprintf(cmd_path, "%s/%s", token, argv[0]);
                         if(cmd_path == NULL)
                         {
-                            return (1);
+                            return (0);
                         }
                         if (access(cmd_path, F_OK) == 0)
                         {
