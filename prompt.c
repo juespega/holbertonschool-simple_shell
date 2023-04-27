@@ -38,7 +38,7 @@ void prompt(char **av __attribute__((unused)), char **env)
         n = 0;
 
         
-        ssize_t len = getline(&string, &n, stdin);
+        len = getline(&string, &n, stdin);
         if (len == -1)
         {
             free(string);
