@@ -19,7 +19,7 @@ void prompt(char **av __attribute__((unused)), char **env)
     char *path, *cmd_path, *token;
     char **ptr;
     pid_t pid;
-    char *token;
+   
 
     while (1)
     {
