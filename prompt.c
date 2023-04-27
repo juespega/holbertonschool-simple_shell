@@ -12,13 +12,14 @@
 void prompt(char **av __attribute__((unused)), char **env)
 {
     char *string = NULL;
-    int j, status, exit_status = 0;
+    int i, status, exit_status = 0;
     ssize_t len;
     size_t n = 0;
     char *argv[MAX_COMMAND];
     char *path, *cmd_path, *token;
     char **ptr;
     pid_t pid;
+    char *token;
 
     while (1)
     {
@@ -50,14 +51,15 @@ void prompt(char **av __attribute__((unused)), char **env)
 
       
         path = getenv("PATH");
-        j = 0;
-        argv[j] = strtok(string, " ");
-        while (argv[j] != NULL && j < MAX_COMMAND - 1)
+        
+        int i = 0;
+        while ((token = strsep(&string, " ")) != NULL && i < MAX_COMMAND - 1)
         {
-            argv[++j] = strtok(NULL, " ");
+        if (token[0] != '\0')
+        {
+        argv[i++] = token;
         }
-
-       
+            
         if (strcmp(argv[0], "clear") == 0)
         {
             system("clear");
@@ -97,6 +99,7 @@ void prompt(char **av __attribute__((unused)), char **env)
 
             
             if (access(argv[0], F_OK) != 0 && path != NULL)
+                
             {
                 token = strtok(path, ":");
                 while (token != NULL)
