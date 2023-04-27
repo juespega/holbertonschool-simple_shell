@@ -1,17 +1,10 @@
 #include "shell.h"
 #define MAX_COMMAND 10
-/**
- * prompt - Display a shell prompt and execute commands
- * @av: Array of command line argument strings
- * @env: Array of environment variable strings
- * Description: This function displays a shell prompt
- * Return: None
- */
 
 void prompt(char **av __attribute__((unused)), char **env)
 {
-    char *line = NULL;
-    int i, j, status, cmd_exit_status = 0;
+    char *str = NULL;
+    int i, j, status, last_cmd_exit_status = 0;
     size_t n = 0;
     ssize_t num_char;
     char *argv[MAX_COMMAND];
@@ -22,37 +15,35 @@ void prompt(char **av __attribute__((unused)), char **env)
     {
         if (isatty(STDIN_FILENO))
         {
-            printf("juli,anayrubio ");
+            printf("$ ");
             fflush(stdout);
         }
-        num_char = getline(&line, &n, stdin);
+        num_char = getline(&str, &n, stdin);
         if (num_char == -1)
         {
-            free(line);
-            cmd_exit_status = WEXITSTATUS(status);
+            free(str);
+            exit (WEXITSTATUS(status));
         }
         i = 0;
-        while (line[i])
+        while (str[i])
         {
-            if (line[i] == '\n')
+            if (str[i] == '\n')
             {
-                line[i] = 0;
+                str[i] = 0;
             }
             i++;
         }
 
-        path = getenv("PATH");
-        j = 0;
-        argv[j] = strtok(line, " ");
-        while (argv[j] != NULL)
+        if (strcmp(argv[0], "clear") == 0)
         {
-            argv[++j] = strtok(NULL, " ");
+            system("clear");
+            continue;
         }
 
         if (strcmp(argv[0], "exit") == 0)
         {
-            free(line);
-            exit(cmd_exit_status);
+            free(str);
+            exit(last_cmd_exit_status);
         }
 
         if (strcmp(argv[0], "env") == 0)
@@ -69,15 +60,22 @@ void prompt(char **av __attribute__((unused)), char **env)
         pid = fork();
         if (pid == -1)
         {
-            free(line);
+            free(str);
             exit(1);
         }
         if (pid == 0)
         {
+            path = getenv("PATH");
+            j = 0;
+            argv[j] = strtok(str, " ");
+            while (argv[j])
+            {
+                argv[++j] = strtok(NULL, " ");
+            }
+            
             if ((argv[0] == NULL) || strlen(argv[0]) == 0)
             {
-              free(line);
-                exit(cmd_exit_status);
+                continue;
             }
 
             if (execve(argv[0], argv, env) == -1)
@@ -101,11 +99,9 @@ void prompt(char **av __attribute__((unused)), char **env)
                         }
                     }
                 }
-                
-                
                 /* Print an error message if the command is not found */
                 fprintf(stderr, "./hsh: 1: %s: not found\n", argv[0]);
-                free(line);
+                free(str);
                 exit(127);
             }
         }
@@ -114,7 +110,7 @@ void prompt(char **av __attribute__((unused)), char **env)
             waitpid(pid, &status, 0);
             if (WIFEXITED(status))
             {
-                cmd_exit_status = WEXITSTATUS(status);
+                last_cmd_exit_status = WEXITSTATUS(status);
             }
         }
     }
