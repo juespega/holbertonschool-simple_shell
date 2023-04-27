@@ -2,7 +2,7 @@
 
 This is a simple shell project, written in C, created as part of the curriculum for the Holberton School. The goal of this project is to implement a basic UNIX shell that can handle commands and arguments, as well as some built-in shell commands.
 
-[](https://www.iberdrola.com/documents/20125/40414/vr_746x419.jpg/d3221355-c367-f6b4-07dc-d893ac61c985?t=1627362779952)
+![](https://www.iberdrola.com/documents/20125/40414/vr_746x419.jpg/d3221355-c367-f6b4-07dc-d893ac61c985?t=1627362779952)
 
 ## Usage
 
@@ -44,7 +44,7 @@ $
 
 6	Organize and comment your code to make it easy to understand
 
-### list of allowed functions and system calls
+### List of allowed functions and system calls
 
 * all functions from strings.h
 * access (man 2 access)
@@ -83,9 +83,6 @@ $
 * wait3 (man 2 wait3)
 * wait4 (man 2 wait4)
 * write (man 2 write)
-
-
-
 
 
 ## Features
