@@ -1,46 +1,73 @@
-a.  C - Simple Shell 1 "Marzo 2023" GNU 
+.TH hsh 1 "2023-04-27" "v1.0" "shell man page"
 
-"C - Simple Shell"
-./hsh
-- Command line interpreter (shell)
+.SH NAME
 
-The shell is executed by typing ./hsh
+hsh
 
-.br
-Then, it will wait for an input such as : command [arguments] [other]
+.SH SYNOPSIS
+
+Is a command-line interpreter or shell that provides a command line user interface. 
+
+
 .SH DESCRIPTION
-This shell is a project dedicated to our studies. My partners and I, have tried to mimic the behavior of a real shell. In case you don't know what a shell is (I doubt that) here is a brief explanation. A shell is a command language interpreter that executes commands read from the standard input or from a file. Our shell does not support the arguments passed to it.
-B What hsh can do :
-.br
-- Executes any command with its arguments
-.br
-- Executes built-in commands
-.br
-The exit value depends on how a function has terminated. Every error is identified by a certain value. On success it will always return 0.br
+
+The shell is a command line user interface that executes command input made by the user. Takes string argument from user input and replaces the \n with \0.
+This makes the system recognize where and how many arguments have been entered, The system uses the function strtok() to parse the command line. Then the system looks through the enviroment a directory containing an executable program. The system looks through the environment for the PATH, for a directory that contains the specified executable file by the user input. Then returns the command and displays an output.
+
+
+.SH FORMAT
+
+Written in the C programming language.
+
+
+.SH COMMANDS
+
+ls
+
+List all files in the current working directory.
+
+pwd
+
+prints the full path of the working directory.
+
+echo
+
+prints text input by the user.
+
+touch
+
+Creates a text file.
+
+date
+
+prints the current date and time stores in you system.
+
+env
+
+prints the enviroment.
+
+exit
+
+exits the shell.
+
 .SH RETURN VALUE
-Return 0 on success, otherwise it will return the exit value.
-.br
-There is no knocontador bugs at the moment.
+
+returns 0
+
 .SH EXAMPLE
-.B Two ways to execute our shell :
-.br
-.B The intercative mode :
-.br
- $ ./hsh
-.br
- #kmandmich$ /bin/ls
-.br
- hsh main.c shell.c
-.br
- #kmandmich$ exit
-.br
- $
-.br
-.B The non-interactive mode :
-.br
- $ echo "/bin/ls" | ./hsh
-.br
- hsh function.c shell.c
+
+print the current working directory and set a new line that waits for the next command.
+
+$ pwd
+
+/home/users/Holberton/simple_shell
+
+$
+
+.SH BUGS
+
+Passing empty spaces into the array will cause a segmentation fault.
+
 .SH AUTHORS
 
 Ana Maria Cardona - Ruben Dario Florez - Julian Esteban Gallego
