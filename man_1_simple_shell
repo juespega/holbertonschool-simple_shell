@@ -1,32 +1,46 @@
-######
-HELL 1 "APRIL 18, 2023"  "HOLBERTON-SIMPLE-SHELL"
-"1.01" "C - simple_shell - man page
-.SH NAME
-.B simple_shell \- simple UNIX command interpreter made in C
-.SH SYNOPSIS
-$ /hsh [options] [file
+a.  C - Simple Shell 1 "Marzo 2023" GNU 
+
+"C - Simple Shell"
+./hsh
+- Command line interpreter (shell)
+
+The shell is executed by typing ./hsh
+
+.br
+Then, it will wait for an input such as : command [arguments] [other]
 .SH DESCRIPTION
-Simple_Shell is a command language interpreter that executes commands read from the standard input.
-Clone of s
-.SH Return Valu
-Always returns the status of the previously executed command ( 0 if no command was executed) , number means exit fail code
-.SH PAT
-looks in PATH env variable for executable program file location
-.SH
-.B Invocation
-.in +2n
-simple_shell can be invoked both interactively and non-interactively.
-If invoked with standard input not connected to a terminal, it reads and executes received commands in order
-If simple_shell is invoked with standard input connected to a terminal, an interactive shell is opened.
-When executing interactively, the simpl_shell displays the prompt \"($) "\ when it is ready to read a command
-.SH OPTIONS
-.B simple_shell
-Command options will be typed after the main command followed by a space and a
-'-' symbol
-.SH EXAMPL
-./hsh [command] [options]
-$ ls -
-.SH BUGS
-not many found
-.SH AUTHOR
+This shell is a project dedicated to our studies. My partners and I, have tried to mimic the behavior of a real shell. In case you don't know what a shell is (I doubt that) here is a brief explanation. A shell is a command language interpreter that executes commands read from the standard input or from a file. Our shell does not support the arguments passed to it.
+B What hsh can do :
+.br
+- Executes any command with its arguments
+.br
+- Executes built-in commands
+.br
+The exit value depends on how a function has terminated. Every error is identified by a certain value. On success it will always return 0.br
+.SH RETURN VALUE
+Return 0 on success, otherwise it will return the exit value.
+.br
+There is no knocontador bugs at the moment.
+.SH EXAMPLE
+.B Two ways to execute our shell :
+.br
+.B The intercative mode :
+.br
+ $ ./hsh
+.br
+ #kmandmich$ /bin/ls
+.br
+ hsh main.c shell.c
+.br
+ #kmandmich$ exit
+.br
+ $
+.br
+.B The non-interactive mode :
+.br
+ $ echo "/bin/ls" | ./hsh
+.br
+ hsh function.c shell.c
+.SH AUTHORS
+
 Ana Maria Cardona - Ruben Dario Florez - Julian Esteban Gallego
